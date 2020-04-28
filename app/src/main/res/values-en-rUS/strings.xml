@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DianDian</string>
+    <string name="hot_comment_label">Hot Comments</string>
+    <string name="view_all_comments">View all comments</string>
+    <string name="hot_comment_title">Hot Comments</string>
+</resources>
