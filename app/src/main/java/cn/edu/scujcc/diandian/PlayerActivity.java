@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Retrofit;
 
@@ -75,7 +76,9 @@ public class PlayerActivity extends AppCompatActivity {
                 EditText t = findViewById(R.id.message);
                 Comment c = new Comment();
                 c.setAuthor("MyApp");
-                c.setStar(1);
+                //改进，随机点赞数(0至100)
+                Random random = new Random();
+                c.setStar(random.nextInt(100));
                 c.setContent(t.getText().toString());
                 lab.addComment(currentChannel.getId(), c, handler);
             });
