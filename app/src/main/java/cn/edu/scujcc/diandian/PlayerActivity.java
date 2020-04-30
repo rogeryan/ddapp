@@ -44,16 +44,16 @@ public class PlayerActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
-                case 2://显示热门评论
+                case ChannelLab.MSG_HOT_COMMENTS://显示热门评论
                     hotComments = (List<Comment>) msg.obj;
                     updateUI();
                     break;
-                case 3://评论成功了，提示一下用户
+                case ChannelLab.MSG_ADD_COMMENT://评论成功了，提示一下用户
                     Toast.makeText(PlayerActivity.this, "感谢您的留言！",
                             Toast.LENGTH_LONG)
                             .show();
                     break;
-                case 4:  //评论失败了，提示一下用户
+                case ChannelLab.MSG_NET_FAILURE:  //评论失败了，提示一下用户
                     Toast.makeText(PlayerActivity.this, "评论失败，请稍候再试。",
                             Toast.LENGTH_LONG)
                             .show();

@@ -17,9 +17,13 @@ import retrofit2.Retrofit;
  * 使用了单例模式保证此类仅有一个对象。
  */
 public class ChannelLab {
+    public final static int MSG_HOT_COMMENTS = 2;
+    public final static int MSG_ADD_COMMENT = 3;
+    public final static int MSG_NET_FAILURE = 4;
+    //用常量代替硬编码内容
+    private final static String TAG = "DianDian";
     //单例第1步
     private static ChannelLab INSTANCE = null;
-
     private List<Channel> data;
 
     //单例第2步
@@ -70,26 +74,26 @@ public class ChannelLab {
             public void onResponse(Call<List<Channel>> call,
                                    Response<List<Channel>> response) {
                 if (null != response && null != response.body()) {
-                    Log.d("DianDian", "从阿里云得到的数据是：");
-                    Log.d("DianDian", response.body().toString());
+                    Log.d(TAG, "从阿里云得到的数据是：");
+                    Log.d(TAG, response.body().toString());
                     data = response.body();
                     //发出通知
                     Message msg = new Message();
                     msg.what = 1;  //自己规定1代表从阿里云获取数据完毕
                     handler.sendMessage(msg);
                 } else {
-                    Log.w("DianDian", "response没有数据！");
+                    Log.w(TAG, "response没有数据！");
                     Message msg = new Message();
-                    msg.what = 4;
+                    msg.what = MSG_NET_FAILURE;
                     handler.sendMessage(msg);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Channel>> call, Throwable t) {
-                Log.e("DianDian", "访问网络失败！", t);
+                Log.e(TAG, "访问网络失败！", t);
                 Message msg = new Message();
-                msg.what = 4;
+                msg.what = MSG_NET_FAILURE;
                 handler.sendMessage(msg);
             }
         });
@@ -109,19 +113,19 @@ public class ChannelLab {
         call.enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-                Log.d("DianDian", "服务器返回的热门评论是：");
-                Log.d("DianDian", response.body().toString());
+                Log.d(TAG, "服务器返回的热门评论是：");
+                Log.d(TAG, response.body().toString());
                 Message msg = new Message();
-                msg.what = 2;
+                msg.what = MSG_HOT_COMMENTS;
                 msg.obj = response.body();
                 handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(Call<List<Comment>> call, Throwable t) {
-                Log.e("DianDian", "访问网络失败！", t);
+                Log.e(TAG, "访问网络失败！", t);
                 Message msg = new Message();
-                msg.what = 4;
+                msg.what = MSG_NET_FAILURE;
                 handler.sendMessage(msg);
             }
         });
@@ -137,18 +141,18 @@ public class ChannelLab {
         call.enqueue(new Callback<Channel>() {
             @Override
             public void onResponse(Call<Channel> call, Response<Channel> response) {
-                Log.d("DianDian", "添加评论后服务器返回的数据是：");
-                Log.d("DianDian", response.body().toString());
+                Log.d(TAG, "添加评论后服务器返回的数据是：");
+                Log.d(TAG, response.body().toString());
                 Message msg = new Message();
-                msg.what = 3;
+                msg.what = MSG_ADD_COMMENT;
                 handler.sendMessage(msg);
             }
 
             @Override
             public void onFailure(Call<Channel> call, Throwable t) {
-                Log.e("DianDian", "访问网络失败！", t);
+                Log.e(TAG, "访问网络失败！", t);
                 Message msg = new Message();
-                msg.what = 4;
+                msg.what = MSG_NET_FAILURE;
                 handler.sendMessage(msg);
             }
         });
