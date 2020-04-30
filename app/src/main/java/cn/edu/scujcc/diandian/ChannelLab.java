@@ -90,4 +90,40 @@ public class ChannelLab {
             }
         });
     }
+
+    /**
+     * 从服务器获取热门评论。
+     *
+     * @return 热门评论列表
+     */
+    public List<Comment> getHotComments(String channelId, Handler handler) {
+        List<Comment> result = null;
+        //调用单例
+        Retrofit retrofit = RetrofitClient.getInstance();
+        ChannelApi api = retrofit.create(ChannelApi.class);
+        Call<List<Comment>> call = api.getHotComments(channelId);
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                if (null != response && null != response.body()) {
+                    Log.d("DianDian", "从阿里云得到的数据是：");
+                    Log.d("DianDian", response.body().toString());
+                    List<Comment> comments = response.body();
+                    //发出通知
+                    Message msg = new Message();
+                    msg.what = 2;  //自己规定2代表热门评论
+                    msg.obj = comments;  //
+                    handler.sendMessage(msg);
+                } else {
+                    Log.w("DianDian", "response没有数据！");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                Log.e("DianDian", "访问网络失败！", t);
+            }
+        });
+        return result;
+    }
 }

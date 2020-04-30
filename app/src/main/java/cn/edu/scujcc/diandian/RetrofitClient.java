@@ -1,5 +1,9 @@
 package cn.edu.scujcc.diandian;
 
+import com.squareup.moshi.Moshi;
+
+import java.util.Date;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -11,9 +15,12 @@ public class RetrofitClient {
 
     public static Retrofit getInstance() {
         if (INSTANCE == null) {
+            Moshi moshi = new Moshi.Builder()
+                    .add(new MyDateAdapter())
+                    .build();
             INSTANCE = new Retrofit.Builder()
                     .baseUrl("http://47.115.34.11:8080")  //改为自己的阿里云服务器IP
-                    .addConverterFactory(MoshiConverterFactory.create())
+                    .addConverterFactory(MoshiConverterFactory.create(moshi))
                     .build();
         }
         return INSTANCE;
