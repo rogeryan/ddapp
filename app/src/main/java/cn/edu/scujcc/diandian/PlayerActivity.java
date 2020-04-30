@@ -21,7 +21,12 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import retrofit2.Retrofit;
 
@@ -29,15 +34,17 @@ public class PlayerActivity extends AppCompatActivity {
     private SimpleExoPlayer player;
     private PlayerView playerView;
     private Channel currentChannel;
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private TextView tvName, tvQuality;
     private Button sendButton;
     private ChannelLab lab = ChannelLab.getInstance();
+    private List<Comment> hotComments;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case 2://显示热门评论
-                    currentChannel = (Channel) msg.obj;
+                    hotComments = (List<Comment>) msg.obj;
                     updateUI();
                     break;
                 case 3://评论成功了，提示一下用户
@@ -80,6 +87,31 @@ public class PlayerActivity extends AppCompatActivity {
         tvQuality = findViewById(R.id.tv_quality);
         tvName.setText(currentChannel.getTitle());
         tvQuality.setText(currentChannel.getQuality());
+        //显示热门评论
+        if (hotComments != null && hotComments.size() > 0) {
+            Comment c1 = hotComments.get(0);
+            TextView username1, date1, content1, score1;
+            username1 = findViewById(R.id.username1);
+            date1 = findViewById(R.id.date1);
+            content1 = findViewById(R.id.content1);
+            score1 = findViewById(R.id.score1);
+            username1.setText(c1.getAuthor());
+            date1.setText(dateFormat.format(c1.getDt()));
+            content1.setText(c1.getContent());
+            score1.setText(c1.getStar() + "");
+        }
+        if (hotComments != null && hotComments.size() > 1) {
+            Comment c2 = hotComments.get(1);
+            TextView username2, date2, content2, score2;
+            username2 = findViewById(R.id.username2);
+            date2 = findViewById(R.id.date2);
+            content2 = findViewById(R.id.content2);
+            score2 = findViewById(R.id.score2);
+            username2.setText(c2.getAuthor());
+            date2.setText(dateFormat.format(c2.getDt()));
+            content2.setText(c2.getContent());
+            score2.setText(c2.getStar() + "");
+        }
     }
 
     @Override
@@ -107,6 +139,7 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        lab.getHotComments(currentChannel.getId(), handler);
         if (player == null) {
             init();
             if (playerView != null) {

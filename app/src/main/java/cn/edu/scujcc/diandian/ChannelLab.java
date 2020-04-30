@@ -79,16 +79,53 @@ public class ChannelLab {
                     handler.sendMessage(msg);
                 } else {
                     Log.w("DianDian", "response没有数据！");
+                    Message msg = new Message();
+                    msg.what = 4;
+                    handler.sendMessage(msg);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Channel>> call, Throwable t) {
                 Log.e("DianDian", "访问网络失败！", t);
+                Message msg = new Message();
+                msg.what = 4;
+                handler.sendMessage(msg);
             }
         });
     }
 
+    /**
+     * 替换之前的getChannelData()，获取热门评论
+     *
+     * @param channelId 频道编号
+     * @param handler
+     */
+    public void getHotComments(String channelId, Handler handler) {
+        //调用单例
+        Retrofit retrofit = RetrofitClient.getInstance();
+        ChannelApi api = retrofit.create(ChannelApi.class);
+        Call<List<Comment>> call = api.getHotComments(channelId);
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                Log.d("DianDian", "服务器返回的热门评论是：");
+                Log.d("DianDian", response.body().toString());
+                Message msg = new Message();
+                msg.what = 2;
+                msg.obj = response.body();
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                Log.e("DianDian", "访问网络失败！", t);
+                Message msg = new Message();
+                msg.what = 4;
+                handler.sendMessage(msg);
+            }
+        });
+    }
     /**
      * 添加评论
      */
