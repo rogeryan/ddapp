@@ -26,8 +26,6 @@ public class ChannelLab {
     private ChannelLab() {
         //初始化空白列表
         data = new ArrayList<>();
-        //删除网络访问
-        //getData();
     }
 
     //单例第3步
@@ -87,6 +85,34 @@ public class ChannelLab {
             @Override
             public void onFailure(Call<List<Channel>> call, Throwable t) {
                 Log.e("DianDian", "访问网络失败！", t);
+            }
+        });
+    }
+
+    /**
+     * 添加评论
+     */
+    public void addComment(String channelId, Comment comment, Handler handler) {
+        //调用单例
+        Retrofit retrofit = RetrofitClient.getInstance();
+        ChannelApi api = retrofit.create(ChannelApi.class);
+        Call<Channel> call = api.addComment(channelId, comment);
+        call.enqueue(new Callback<Channel>() {
+            @Override
+            public void onResponse(Call<Channel> call, Response<Channel> response) {
+                Log.d("DianDian", "添加评论后服务器返回的数据是：");
+                Log.d("DianDian", response.body().toString());
+                Message msg = new Message();
+                msg.what = 3;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onFailure(Call<Channel> call, Throwable t) {
+                Log.e("DianDian", "访问网络失败！", t);
+                Message msg = new Message();
+                msg.what = 4;
+                handler.sendMessage(msg);
             }
         });
     }

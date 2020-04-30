@@ -1,11 +1,17 @@
 package cn.edu.scujcc.diandian;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -24,6 +30,28 @@ public class PlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
     private Channel currentChannel;
     private TextView tvName, tvQuality;
+    private Button sendButton;
+    private ChannelLab lab = ChannelLab.getInstance();
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case 2://显示热门评论
+                    currentChannel = (Channel) msg.obj;
+                    updateUI();
+                    break;
+                case 3://评论成功了，提示一下用户
+                    Toast.makeText(PlayerActivity.this, "感谢您的留言！",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    break;
+                case 4:  //评论失败了，提示一下用户
+                    Toast.makeText(PlayerActivity.this, "评论失败，请稍候再试。",
+                            Toast.LENGTH_LONG)
+                            .show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +62,17 @@ public class PlayerActivity extends AppCompatActivity {
         Log.d("DianDian", "取得的当前频道对象是：" + s);
         if (s != null && s instanceof Channel) {
             currentChannel = (Channel) s;
+            updateUI();
+            sendButton = findViewById(R.id.send);
+            sendButton.setOnClickListener(v -> {
+                EditText t = findViewById(R.id.message);
+                Comment c = new Comment();
+                c.setAuthor("MyApp");
+                c.setStar(1);
+                c.setContent(t.getText().toString());
+                lab.addComment(currentChannel.getId(), c, handler);
+            });
         }
-        updateUI();
     }
 
     private void updateUI() {
