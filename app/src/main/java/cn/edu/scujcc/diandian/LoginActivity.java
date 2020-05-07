@@ -24,9 +24,14 @@ public class LoginActivity extends AppCompatActivity {
                 case UserLab.USER_LOGIN_FAIL:
                     loginFail();
                     break;
+                case UserLab.USER_LOGIN_PASSWORD_ERROR:
+                    loginPasswordError();
+                    break;
             }
         }
     };
+
+
     private TextInputLayout username, password;
     private Button loginButton;
     private UserLab lab = UserLab.getInstance();
@@ -37,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void loginPasswordError() {
+        Toast.makeText(LoginActivity.this, "密码错误，请重试！", Toast.LENGTH_LONG).show();
+    }
     private void loginFail() {
         Toast.makeText(LoginActivity.this, "登录失败！", Toast.LENGTH_LONG).show();
     }

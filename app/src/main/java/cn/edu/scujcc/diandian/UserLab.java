@@ -12,6 +12,8 @@ import retrofit2.Retrofit;
 public class UserLab {
     public final static int USER_LOGIN_SUCCESS = 1;
     public final static int USER_LOGIN_FAIL = -1;
+    public final static int USER_LOGIN_PASSWORD_ERROR = -2;
+
     private final static String TAG = "DianDian";
     private static UserLab INSTANCE = null;
 
@@ -33,11 +35,17 @@ public class UserLab {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 if (response.body() != null) {
-                    Log.d(TAG, "登录成功");
-                    Log.d(TAG, response.body().toString());
-                    Message msg = new Message();
-                    msg.what = USER_LOGIN_SUCCESS;
-                    handler.sendMessage(msg);
+                    Log.d(TAG, "登录结果是：" + response.body().toString());
+                    String result = response.body().toString();
+                    if (result.equals("1")) {
+                        Message msg = new Message();
+                        msg.what = USER_LOGIN_SUCCESS;
+                        handler.sendMessage(msg);
+                    } else {
+                        Message msg = new Message();
+                        msg.what = USER_LOGIN_PASSWORD_ERROR;
+                        handler.sendMessage(msg);
+                    }
                 } else {
                     Message msg = new Message();
                     msg.what = USER_LOGIN_FAIL;
