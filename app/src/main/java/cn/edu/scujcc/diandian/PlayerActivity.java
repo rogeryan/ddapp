@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -22,6 +25,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Retrofit;
 
@@ -30,28 +34,31 @@ public class PlayerActivity extends AppCompatActivity {
     private PlayerView playerView;
     private Channel currentChannel;
     private TextView tvName, tvQuality;
+    private final static String TAG = "DianDian";
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ChannelLab lab = ChannelLab.getInstance();
+    private ImageButton sendButton;
     //TODO 完成接收到数据后更新界面的代码
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == 2) {
-                if (msg.obj != null) {
+            switch (msg.what) {
+                case ChannelLab.MSG_HOT_COMMENTS:
+                    if (msg.obj != null) {
                     List<Comment> hotComments = (List<Comment>) msg.obj;
-                    //更新界面
-                    if (hotComments.size() > 0) {
-                        Comment c1 = hotComments.get(0);
-                        TextView username1 = findViewById(R.id.username1);
-                        username1.setText(c1.getAuthor());
-                        TextView date1 = findViewById(R.id.date1);
-                        date1.setText(dateFormat.format(c1.getDt()));
-                        TextView content1 = findViewById(R.id.content1);
-                        content1.setText(c1.getContent());
-                        TextView star1 = findViewById(R.id.thumbup_count1);
-                        star1.setText(c1.getStar() + "");
-                    }
+                        updateHotComments(hotComments);
                 }
+                    break;
+                case ChannelLab.MSG_ADD_COMMENT:
+                    Toast.makeText(PlayerActivity.this, "感谢您的留言！",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    break;
+                case ChannelLab.MSG_FAILURE:
+                    Toast.makeText(PlayerActivity.this, "评论失败，请稍候再试！",
+                            Toast.LENGTH_LONG)
+                            .show();
+                    break;
             }
         }
     };
@@ -62,9 +69,22 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
         Serializable s = getIntent().getSerializableExtra("channel");
-        Log.d("DianDian", "取得的当前频道对象是：" + s);
+        Log.d(TAG, "取得的当前频道对象是：" + s);
         if (s != null && s instanceof Channel) {
             currentChannel = (Channel) s;
+
+            sendButton = findViewById(R.id.send);
+            sendButton.setOnClickListener(v -> {
+                EditText t = findViewById(R.id.comment);
+                Comment c = new Comment();
+                c.setAuthor("MyApp");
+                c.setContent(t.getText().toString());
+                //改进，随机点赞(0至100)
+                Random random = new Random();
+                c.setStar(random.nextInt(100));
+                //调用retrofit上传评论
+                lab.addComment(currentChannel.getId(), c, handler);
+            });
         }
         updateUI();
     }
@@ -76,6 +96,30 @@ public class PlayerActivity extends AppCompatActivity {
         tvQuality.setText(currentChannel.getQuality());
     }
 
+    private void updateHotComments(List<Comment> hotComments) {
+        if (hotComments != null && hotComments.size() > 0) {
+            Comment c = hotComments.get(0);
+            TextView username1 = findViewById(R.id.username1);
+            username1.setText(c.getAuthor());
+            TextView date1 = findViewById(R.id.date1);
+            date1.setText(dateFormat.format(c.getDt()));
+            TextView content1 = findViewById(R.id.content1);
+            content1.setText(c.getContent());
+            TextView star1 = findViewById(R.id.thumbup_count1);
+            star1.setText(c.getStar() + "");
+        }
+        if (hotComments != null && hotComments.size() > 1) {
+            Comment c = hotComments.get(1);
+            TextView username1 = findViewById(R.id.username2);
+            username1.setText(c.getAuthor());
+            TextView date1 = findViewById(R.id.date2);
+            date1.setText(dateFormat.format(c.getDt()));
+            TextView content1 = findViewById(R.id.content2);
+            content1.setText(c.getContent());
+            TextView star1 = findViewById(R.id.thumbup_count2);
+            star1.setText(c.getStar() + "");
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -128,7 +172,7 @@ public class PlayerActivity extends AppCompatActivity {
             videoUrl = Uri.parse(currentChannel.getUrl());
         }
         DataSource.Factory factory =
-                new DefaultDataSourceFactory(this, "DianDian");
+                new DefaultDataSourceFactory(this, TAG);
         MediaSource videoSource = new HlsMediaSource.Factory(factory).createMediaSource(videoUrl);
         player.prepare(videoSource);
     }

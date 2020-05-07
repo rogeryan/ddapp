@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         //按快捷键Ctrl o
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == 1) {
+            if (msg.what == ChannelLab.MSG_CHANNELS) {
                 rvAdapter.notifyDataSetChanged();
             }
         }
