@@ -4,4 +4,9 @@
     <string name="hot_comment_label">Hot Comments</string>
     <string name="view_all_comments">View all comments</string>
     <string name="hot_comment_title">Hot Comments</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_login">Login</string>
+    <string name="login_register">Register</string>
+    <string name="login_find_password">Find Password</string>
 </resources>
