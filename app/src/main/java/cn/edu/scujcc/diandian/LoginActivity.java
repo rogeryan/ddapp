@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
             if (null != msg) {
                 switch (msg.what) {
                     case UserLab.USER_LOGIN_SUCCESS:
-                        loginSucess();
+                        loginSuccess();
                         break;
                     case UserLab.USER_LOGIN_PASSWORD_ERROR:
                         loginPasswordError();
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    private void loginSucess() {
+    private void loginSuccess() {
         Toast.makeText(LoginActivity.this,
                 "登录成功！",
                 Toast.LENGTH_LONG).show();
