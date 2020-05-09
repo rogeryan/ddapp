@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private TextInputLayout username, password;
-    private Button loginButton;
+    private Button loginButton, registerButton;
     private UserLab lab = UserLab.getInstance();
 
     private void loginSucess() {
@@ -54,13 +53,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = findViewById(R.id.username);
-        password = findViewById(R.id.password);
+        password = findViewById(R.id.r_password1);
         loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(v -> {
             String u = username.getEditText().getText().toString();
             String p = password.getEditText().getText().toString();
             lab.login(u, p, handler);
+        });
+
+        registerButton = findViewById(R.id.register_button);
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }
