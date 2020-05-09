@@ -12,4 +12,5 @@
     <string name="gender">性别</string>
     <string name="birthday">生日</string>
     <string name="phone">手机号</string>
+    <string name="birthday_title">请选择你的生日</string>
 </resources>
