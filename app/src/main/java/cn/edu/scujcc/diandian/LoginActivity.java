@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.Text;
-
 public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private UserLab lab = UserLab.getInstance();
@@ -63,12 +61,18 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
-            TextInputLayout username = findViewById(R.id.login_username);
+            TextInputLayout username = findViewById(R.id.r_username);
             TextInputLayout password = findViewById(R.id.login_password);
             String u = username.getEditText().getText().toString();
             String p = password.getEditText().getText().toString();
             //TODO 调用Retrofit
             lab.login(u, p, handler);
+        });
+
+        Button registerButton = findViewById(R.id.register_button);
+        registerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }

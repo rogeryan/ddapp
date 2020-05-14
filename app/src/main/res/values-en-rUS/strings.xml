@@ -9,4 +9,12 @@
     <string name="login_login">Login</string>
     <string name="login_register">Register</string>
     <string name="login_find_password">Find Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone">Phone</string>
+    <string name="gender">Gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_secret">Secret</string>
+    <string name="birthday">Birthday</string>
+    <string name="birthday_title">Select your birthday please</string>
 </resources>

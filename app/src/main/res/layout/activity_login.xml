@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_username"
+        android:id="@+id/r_username"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_username"
+        app:layout_constraintTop_toBottomOf="@+id/r_username"
         app:startIconDrawable="@drawable/ic_security_black_24dp">
 
         <com.google.android.material.textfield.TextInputEditText

@@ -8,4 +8,12 @@
     <string name="login_login">登录</string>
     <string name="login_register">立即注册</string>
     <string name="login_find_password">找回密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="phone">手机号</string>
+    <string name="gender">性别</string>
+    <string name="gender_male">男</string>
+    <string name="gender_female">女</string>
+    <string name="gender_secret">保密</string>
+    <string name="birthday">生日</string>
+    <string name="birthday_title">请选择你的生日</string>
 </resources>

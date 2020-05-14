@@ -29,15 +29,15 @@ public class UserLab {
     public void login(String username, String password, Handler handler) {
         Retrofit retrofit = RetrofitClient.getInstance();
         UserApi api = retrofit.create(UserApi.class);
-        Call<Integer> call = api.login(username, password);
-        call.enqueue(new Callback<Integer>() {
+        Call<Result> call = api.login(username, password);
+        call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(Call<Result> call, Response<Result> response) {
                 Log.d(TAG, "登录成功返回数据");
                 boolean loginSuccess = false;
                 if (response.body() != null) {
-                    int result = response.body().intValue();
-                    if (result == 1) {  //登录成功
+                    Result result = response.body();
+                    if (result.getStatus() == 1) {  //登录成功
                         loginSuccess = true;
                     }
                 }
@@ -53,7 +53,7 @@ public class UserLab {
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(Call<Result> call, Throwable t) {
                 Log.e(TAG, "登录失败！", t);
                 Message msg = new Message();
                 msg.what = USER_LOGIN_NET_ERROR;
