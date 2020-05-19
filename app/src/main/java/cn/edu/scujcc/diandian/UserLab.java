@@ -13,6 +13,7 @@ public class UserLab {
     public final static int USER_LOGIN_SUCCESS = 1;
     public final static int USER_LOGIN_PASSWORD_ERROR = -1;
     public final static int USER_LOGIN_NET_ERROR = -2;
+    public final static String USER_CURRENT = "USER_CURRENT";
     private final static String TAG = "DianDian";
     private static UserLab INSTANCE = null;
 

@@ -37,6 +37,7 @@ public class PlayerActivity extends AppCompatActivity {
     private final static String TAG = "DianDian";
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ChannelLab lab = ChannelLab.getInstance();
+    private MyPreference prefs = MyPreference.getInstance();
     private ImageButton sendButton;
     //TODO 完成接收到数据后更新界面的代码
     private Handler handler = new Handler() {
@@ -94,6 +95,9 @@ public class PlayerActivity extends AppCompatActivity {
         tvQuality = findViewById(R.id.tv_quality);
         tvName.setText(currentChannel.getTitle());
         tvQuality.setText(currentChannel.getQuality());
+        //读取当前用户名并显示
+        TextView currentUser = findViewById(R.id.current_user);
+        currentUser.setText(prefs.currentUser());
     }
 
     private void updateHotComments(List<Comment> hotComments) {

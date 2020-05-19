@@ -237,5 +237,14 @@
             app:srcCompat="@drawable/ic_send_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/current_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_quality"
+        app:layout_constraintStart_toEndOf="@+id/tv_quality" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

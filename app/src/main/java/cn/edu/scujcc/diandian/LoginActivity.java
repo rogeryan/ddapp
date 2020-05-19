@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private UserLab lab = UserLab.getInstance();
+    private MyPreference prefs = MyPreference.getInstance();
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(LoginActivity.this,
                 "登录成功！",
                 Toast.LENGTH_LONG).show();
+        //FIXME 替换tom，从服务器获取登录成功的真实用户名。
+        prefs.saveUser("tom");
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -58,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        prefs.setup(getApplicationContext());
 
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(v -> {
