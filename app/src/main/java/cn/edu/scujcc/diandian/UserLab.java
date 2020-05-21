@@ -29,21 +29,24 @@ public class UserLab {
     public void login(String username, String password, Handler handler) {
         Retrofit retrofit = RetrofitClient.getInstance();
         UserApi api = retrofit.create(UserApi.class);
-        Call<Result> call = api.login(username, password);
-        call.enqueue(new Callback<Result>() {
+        Call<Result<String>> call = api.login(username, password);
+        call.enqueue(new Callback<Result<String>>() {
             @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.d(TAG, "登录成功返回数据");
+            public void onResponse(Call<Result<String>> call, Response<Result<String>> response) {
                 boolean loginSuccess = false;
+                String token = null;
                 if (response.body() != null) {
-                    Result result = response.body();
-                    if (result.getStatus() == 1) {  //登录成功
+                    Log.d(TAG, "服务器返回结果" + response.body());
+                    Result<String> result = response.body();
+                    if (result.getStatus() == Result.OK) {  //登录成功
                         loginSuccess = true;
+                        token = result.getData();
                     }
                 }
                 if (loginSuccess) {
                     Message msg = new Message();
                     msg.what = USER_LOGIN_SUCCESS;
+                    msg.obj = token;
                     handler.sendMessage(msg);
                 } else {
                     Message msg = new Message();
@@ -53,12 +56,16 @@ public class UserLab {
             }
 
             @Override
-            public void onFailure(Call<Result> call, Throwable t) {
+            public void onFailure(Call<Result<String>> call, Throwable t) {
                 Log.e(TAG, "登录失败！", t);
                 Message msg = new Message();
                 msg.what = USER_LOGIN_NET_ERROR;
                 handler.sendMessage(msg);
             }
         });
+    }
+
+    public void register(User user, Handler handler) {
+        Log.d(TAG, "准备向服务器注册用户：" + user);
     }
 }

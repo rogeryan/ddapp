@@ -3,14 +3,19 @@ package cn.edu.scujcc.diandian;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Button;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "DianDian";
+    Button registerButton;
     TextInputLayout birthdayInput;
+    private UserLab lab = UserLab.getInstance();
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +40,11 @@ public class RegisterActivity extends AppCompatActivity {
             picker.show(getSupportFragmentManager(), picker.toString());
         });
 
+        registerButton = findViewById(R.id.register_button);
+        registerButton.setOnClickListener(v -> {
+            User u = new User();
+            //TODO 填充u对象的内容。
+            lab.register(u, handler);
+        });
     }
 }
