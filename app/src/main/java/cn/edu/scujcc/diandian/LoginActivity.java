@@ -7,18 +7,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
+    private final static String TAG = "DianDian";
+
+
+    private TextInputLayout username, password;
+    private String user;
+    private Button loginButton, registerButton;
+    private UserLab lab = UserLab.getInstance();
+    private MyPreference prefs = MyPreference.getInstance();
     private final Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case UserLab.USER_LOGIN_SUCCESS:
-                    loginSucess();
+                    loginSucess(msg.obj);
                     break;
                 case UserLab.USER_LOGIN_FAIL:
                     loginFail();
@@ -30,13 +39,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-
-    private TextInputLayout username, password;
-    private Button loginButton, registerButton;
-    private UserLab lab = UserLab.getInstance();
-
-    private void loginSucess() {
+    private void loginSucess(Object token) {
         Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_LONG).show();
+        prefs.saveUser(user, (String) token);
+        Log.d(TAG, "用户" + user + "登录成功，token＝" + token);
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -52,14 +58,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username = findViewById(R.id.username);
-        password = findViewById(R.id.r_password1);
+        username = findViewById(R.id.login_username);
+        password = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
 
         loginButton.setOnClickListener(v -> {
-            String u = username.getEditText().getText().toString();
+            user = username.getEditText().getText().toString();
             String p = password.getEditText().getText().toString();
-            lab.login(u, p, handler);
+            lab.login(user, p, handler);
         });
 
         registerButton = findViewById(R.id.register_button);
@@ -67,5 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        prefs.setup(getApplicationContext());
     }
 }

@@ -3,10 +3,22 @@ package cn.edu.scujcc.diandian;
 /**
  * 服务器返回的消息。
  */
-public class Result {
+public class Result<T> {
+    public final static int OK = 1;
+    public final static int ERROR = 0;
+
     private int status;
     private String message;
-    private User data;
+    private T data;
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "status=" + status +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 
     public int getStatus() {
         return status;
@@ -24,11 +36,11 @@ public class Result {
         this.message = message;
     }
 
-    public User getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(User data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

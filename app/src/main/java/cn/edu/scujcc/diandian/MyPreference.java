@@ -27,9 +27,10 @@ public class MyPreference {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public void saveUser(String username) {
+    public void saveUser(String username, String token) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(UserLab.USER_CURRENT, username);
+        editor.putString(UserLab.USER_TOKEN, token);
         editor.apply();
     }
 

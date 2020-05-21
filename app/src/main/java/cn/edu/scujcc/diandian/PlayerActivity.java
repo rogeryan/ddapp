@@ -53,7 +53,7 @@ public class PlayerActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG)
                             .show();
                     break;
-                case ChannelLab.MSG_NET_FAILURE:  //评论失败了，提示一下用户
+                case ChannelLab.MSG_FAILURE:  //评论失败了，提示一下用户
                     Toast.makeText(PlayerActivity.this, "评论失败，请稍候再试。",
                             Toast.LENGTH_LONG)
                             .show();

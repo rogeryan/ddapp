@@ -62,7 +62,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:hint="@string/login_password_2"
+        android:hint="@string/confirm_password"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,19 +115,19 @@
             android:id="@+id/r_male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/male" />
+            android:text="@string/gender_male" />
 
         <RadioButton
             android:id="@+id/r_female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/female" />
+            android:text="@string/gender_female" />
 
         <RadioButton
             android:id="@+id/r_unknown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/unknown" />
+            android:text="@string/gender_secret" />
     </RadioGroup>
 
     <TextView

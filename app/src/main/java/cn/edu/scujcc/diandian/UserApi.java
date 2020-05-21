@@ -15,7 +15,7 @@ public interface UserApi {
      * @return
      */
     @GET("/user/login/{username}/{password}")
-    Call<Integer> login(@Path("username") String username, @Path("password") String password);
+    Call<Result<String>> login(@Path("username") String username, @Path("password") String password);
 
     /**
      * 用户注册
