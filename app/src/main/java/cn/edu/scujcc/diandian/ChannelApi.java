@@ -19,7 +19,7 @@ public interface ChannelApi {
      * @return 热门评论的列表
      */
     @GET("/channel/{channelId}/hotcomments")
-    Call<List<Comment>> getHotComments(@Path("channelId") String channelId);
+    Call<Result<List<Comment>>> getHotComments(@Path("channelId") String channelId);
 
     /**
      * 新增评论
