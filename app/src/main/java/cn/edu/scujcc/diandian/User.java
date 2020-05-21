@@ -2,6 +2,9 @@ package cn.edu.scujcc.diandian;
 
 import java.util.Date;
 
+/**
+ * 使用app的用户
+ */
 public class User {
     private String id;
     private String username;
@@ -11,6 +14,20 @@ public class User {
     private Date birthday;
     private Date lastLogin;
     private String lastIp;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birthday=" + birthday +
+                ", lastLogin=" + lastLogin +
+                ", lastIp='" + lastIp + '\'' +
+                '}';
+    }
 
     public String getId() {
         return id;
