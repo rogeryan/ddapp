@@ -69,18 +69,22 @@ public class ChannelLab {
     public void getData(Handler handler) {
         //调用单例
         Retrofit retrofit = RetrofitClient.getInstance();
-
         ChannelApi api = retrofit.create(ChannelApi.class);
-        Call<List<Channel>> call = api.getAllChannels();
+        Call<Result<List<Channel>>> call = api.getAllChannels();
         //enqueue会自己生成子线程， 去执行后续代码
-        call.enqueue(new Callback<List<Channel>>() {
+        call.enqueue(new Callback<Result<List<Channel>>>() {
             @Override
-            public void onResponse(Call<List<Channel>> call,
-                                   Response<List<Channel>> response) {
-                if (null != response && null != response.body()) {
-                    Log.d(TAG, "从阿里云得到的数据是：");
+            public void onResponse(Call<Result<List<Channel>>> call,
+                                   Response<Result<List<Channel>>> response) {
+                if (response.code() == 403) {  //缺少token或token错误
+                    Message msg = new Message();
+                    msg.what = MSG_FAILURE;
+                    handler.sendMessage(msg);
+                } else if (null != response && null != response.body()) {
+                    Log.d(TAG, "从云得到的数据是：");
                     Log.d(TAG, response.body().toString());
-                    data = response.body();
+                    Result<List<Channel>> result = response.body();
+                    data = result.getData();
                     //发出通知
                     Message msg = new Message();
                     msg.what = MSG_CHANNELS;
@@ -91,7 +95,7 @@ public class ChannelLab {
             }
 
             @Override
-            public void onFailure(Call<List<Channel>> call, Throwable t) {
+            public void onFailure(Call<Result<List<Channel>>> call, Throwable t) {
                 Log.e(TAG, "访问网络失败！", t);
             }
         });

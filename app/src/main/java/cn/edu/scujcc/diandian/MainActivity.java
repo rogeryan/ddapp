@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.net.URLConnection;
@@ -20,17 +21,27 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView channelRv;
     private ChannelRvAdapter rvAdapter;
     private ChannelLab lab = ChannelLab.getInstance();
+    private final static String TAG = "DianDian";
     //线程通讯第1步，在主线程创建Handler
     private Handler handler = new Handler() {
         //按快捷键Ctrl o
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == ChannelLab.MSG_CHANNELS) {
-                rvAdapter.notifyDataSetChanged();
+            switch (msg.what) {
+                case ChannelLab.MSG_CHANNELS:
+                    rvAdapter.notifyDataSetChanged();
+                    break;
+                case ChannelLab.MSG_FAILURE:
+                    failed();
+                    break;
             }
         }
     };
 
+    private void failed() {
+        Toast.makeText(MainActivity.this, "Token无效，禁止访问", Toast.LENGTH_LONG).show();
+        Log.w(TAG, "服务器禁止访问，因为token无效。");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

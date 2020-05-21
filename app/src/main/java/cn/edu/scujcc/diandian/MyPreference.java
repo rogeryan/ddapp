@@ -37,4 +37,8 @@ public class MyPreference {
     public String currentUser() {
         return prefs.getString(UserLab.USER_CURRENT, "未登录");
     }
+
+    public String currentToken() {
+        return prefs.getString(UserLab.USER_TOKEN, "");
+    }
 }

@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface ChannelApi {
     @GET("/channel")
-    Call<List<Channel>> getAllChannels();
+    Call<Result<List<Channel>>> getAllChannels();
 
     /**
      * 获取热门评论。
