@@ -14,6 +14,8 @@ public class UserLab {
     public final static int USER_LOGIN_PASSWORD_ERROR = -1;
     public final static int USER_LOGIN_NET_ERROR = -2;
     private final static String TAG = "DianDian";
+    public final static String USER_CURRENT = "USER_CURRENT";
+    public final static String USER_TOKEN = "USER_TOKEN";
     private static UserLab INSTANCE = null;
 
     private UserLab() {

@@ -25,12 +25,22 @@ public class MainActivity extends AppCompatActivity {
         //按快捷键Ctrl o
         @Override
         public void handleMessage(@NonNull Message msg) {
-            if (msg.what == ChannelLab.MSG_CHANNELS) {
-                rvAdapter.notifyDataSetChanged();
+            switch (msg.what) {
+                case ChannelLab.MSG_CHANNELS:
+                    rvAdapter.notifyDataSetChanged();
+                    break;
+                case ChannelLab.MSG_FAILURE:
+                    failed();
+                    break;
             }
         }
     };
 
+    private void failed() {
+        Toast.makeText(MainActivity.this,
+                "Token无效，禁止访问", Toast.LENGTH_LONG)
+                .show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface ChannelApi {
     @GET("/channel")
-    Call<List<Channel>> getAllChannels();
+    Call<Result<List<Channel>>> getAllChannels();
 
     /**
      * 获取热门评论。
@@ -19,7 +19,7 @@ public interface ChannelApi {
      * @return 热门评论的列表
      */
     @GET("/channel/{channelId}/hotcomments")
-    Call<List<Comment>> getHotComments(@Path("channelId") String channelId);
+    Call<Result<List<Comment>>> getHotComments(@Path("channelId") String channelId);
 
     /**
      * 新增评论
